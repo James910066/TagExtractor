@@ -58,6 +58,40 @@ public class Main
                     System.out.println("Run the program again!");
                     System.exit(0);
                 }
+
+                //Choose and read the article to check for keyWords into an array
+                new File(System.getProperty("user.dir"));
+                fileChooser.setCurrentDirectory(workingDirectory);
+                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+                {
+                    chosenFile = fileChooser.getSelectedFile();
+                    Path file = chosenFile.toPath();
+                    InputStream stream = new BufferedInputStream(Files.newInputStream(file, CREATE));
+                    BufferedReader fileReader = new BufferedReader(new InputStreamReader(stream));
+                    final String fileName = chosenFile.getName();
+
+                    //Read the Stop Words file into an array to check against
+                    while (fileReader.ready()) {
+                        readLine = fileReader.readLine();
+                        keyWords.add(readLine);
+                    }
+                    //Remove stop words and add keywords into array
+                    for (String w : keyWords)
+                    {
+                        
+                        System.out.println(w);
+                    }
+
+                    System.out.println("Extracted files from: " + fileName);
+                    fileReader.close();
+                    System.out.println("\n\nData file read!");
+                }
+                else
+                {
+                    System.out.println("Failed to choose a file to process");
+                    System.out.println("Run the program again!");
+                    System.exit(0);
+                }
             }
 
             catch (FileNotFoundException e)
@@ -69,7 +103,6 @@ public class Main
             }
             System.out.println("Do you want to quit?");
             finalConfirm = SafeInput.getYNConfirm(in, "Are you sure?");
-
             if (finalConfirm)
             {
                 System.exit(0);
